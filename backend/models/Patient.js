@@ -17,12 +17,11 @@ const PatientSchema = new mongoose.Schema({
   patientId:        { type: String, unique: true }
 }, { timestamps: true });
 
-PatientSchema.pre('save', async function(next) {
+PatientSchema.pre('save', async function() {
   if (!this.patientId) {
     const count = await mongoose.model('Patient').countDocuments();
     this.patientId = `P-${1000 + count + 1}`;
   }
-  next();
 });
 
 module.exports = mongoose.model('Patient', PatientSchema);
